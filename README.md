@@ -80,13 +80,16 @@ filter_data = {
     "buyer":{"$exists": False},
     "export_at":{"$exists": True},
     "gift_name":"Lunar Snake",
+
     "model": "Albino (1.5%)",
-    # "model":{"$regex": "^Albino \\("}, # юзаем regex если нет возможности взять % редкость
+    # Либо юзаем regex если нет возможности взять % редкость
+    # "model":{"$regex": "^Albino \\("},
 
     # Запрос нескольких моделей:
 
     # "model":{'$in':["Synthwave (0.3%)", "Albino (1.5%)"]},
-    # "model": {'$regex':f"^({'|'.join(["Synthwave", "Albino"])})"}, # юзаем regex если нет возможности взять % редкость
+    # Либо юзаем regex если нет возможности взять % редкость
+    # "model": {'$regex':f"^({'|'.join(["Synthwave", "Albino"])})"},
     "asset":"TON"
 }
 
