@@ -47,8 +47,10 @@ json_data = {
 - backdrop - Фон
 - pattern - Узор
 
-1. Для модели, фона и узора значение нужно указывать в формате regex, чтобы дополнительно не искать процентную редкость. Пример: `"gift_name":"Lunar Snake", "model":"{"$regex": f"^Python Dev \\("}"`
-2. Для поиска по нескольким объектам одного аттрибута(хотите увидеть 5 моделей/фонов), нужно указывать значение в формате списка: `"model":["Hot Cherry (0.3%)", "Python Dev (0.8%)"]`\
+1. Для модели, фона и узора значение нужно указывать в формате regex, чтобы дополнительно не искать процентную редкость. Пример: `"gift_name":"Lunar Snake", "model": {"$regex": f"^Albino \\("}`
+2. Если же вам лень писать фильтр для регекса или у вас откуда-то есть процентная редкость аттрибута, то указываете: `"model": "Albino (1.5%)"`
+3. Для поиска по нескольким объектам одного аттрибута(хотите увидеть 5 моделей/фонов), нужно указывать значение в формате списка: `"model":{'$in':["Synthwave (0.3%)", "Albino (1.5%)"]}`\
+- Альтернативный вариант для regex: `"model": {'$regex':f"^({'|'.join(["Synthwave", "Albino"])})"}`\
    В самом конце фильтра указываете последний фильтр: `"asset":"TON"`, соответственно отвечающий за валюту в которой будут выданы подарки. Может быть TONNEL и USDT, но смысла от такого фильтра я не вижу, результаты будут милипиздрические.
 
 **price_range** - Диапозон цены в формате списка: `'price_range': [1,1000]`. Оставьте None для отключения фильтра по цене.  
@@ -63,21 +65,45 @@ json_data = {
 ### Рабочий код на питоне:
 
 ```python
+import json
 from curl_cffi import requests
+
+
+sort_data = {
+    'message_post_time': -1,
+    'gift_id': -1
+}
+
+filter_data = {
+    "price":{"$exists": True},
+    "refunded":{"$ne":True},
+    "buyer":{"$exists": False},
+    "export_at":{"$exists": True},
+    "gift_name":"Lunar Snake",
+    "model": "Albino (1.5%)",
+    # "model":{"$regex": "^Albino \\("}, # юзаем regex если нет возможности взять % редкость
+
+    # Запрос нескольких моделей:
+
+    # "model":{'$in':["Synthwave (0.3%)", "Albino (1.5%)"]},
+    # "model": {'$regex':f"^({'|'.join(["Synthwave", "Albino"])})"}, # юзаем regex если нет возможности взять % редкость
+    "asset":"TON"
+}
 
 json_data = {
     'page': 1,
-    'limit': 15,
-    'sort': '{"export_at":1,"gift_id":-1}',
-    'filter': '{"price":{"$exists":true},"refunded":{"$ne":true},"buyer":{"$exists":false},"export_at":{"$exists":true},"gift_name":"Lunar Snake", "asset":"TON"}',
+    'limit': 5,
+    'sort': json.dumps(sort_data),
+    'filter': json.dumps(filter_data),
     'price_range': None,
     'user_auth': '',
 }
 
+
+
 response = requests.post('https://gifts2.tonnel.network/api/pageGifts', json=json_data, impersonate="chrome")
 print(response.json())
-
-# Код выведет 1 страницу с 15 подарками с именем Lunar Snake по мере их выставления по возрастанию (вначале самые новые, в конце более старые)
+# Код выведет первую страницу с 5 самыми новыми подарками с именем Lunar Snake, с моделью Albino
 
 
 # Хедеры необязательны, но на всякий случай:
@@ -92,4 +118,4 @@ print(response.json())
 тг для связи - [@bxxst](t.me/bxxst)
 
 
-P. S. Документация скоро пополнится 
+P. S. Можете глянуть [этот репозиторий](https://github.com/bleach-hub/tonnelmp) уже с полноценной либкой по апи тоннеля (не моей)
