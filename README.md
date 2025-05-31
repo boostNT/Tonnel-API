@@ -6,7 +6,9 @@
 
 ### При заходе на сайт, совершается пост запрос по этому юрл:
 
-<code>https://gifts2.tonnel.network/api/pageGifts</code>
+```python
+https://gifts2.tonnel.network/api/pageGifts
+```
 
 ### По нему загружаются подарки, выставленные на тонеле!
 
