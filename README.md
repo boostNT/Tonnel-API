@@ -71,6 +71,13 @@ import json
 from curl_cffi import requests
 
 
+headers = {
+    'origin': 'https://market.tonnel.network',
+    'referer': 'https://market.tonnel.network/',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
+}
+
+
 sort_data = {
     'message_post_time': -1,
     'gift_id': -1
@@ -111,12 +118,7 @@ print(response.json())
 # Код выведет первую страницу с 5 самыми новыми подарками с именем Lunar Snake, с моделью Albino
 
 
-# Хедеры необязательны, но на всякий случай:
-# headers = {
-#     'origin': 'https://market.tonnel.network',
-#     'referer': 'https://market.tonnel.network/',
-#     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
-# }
+
 ```
 
 В общем как-то так, за последтсвия использования информации вами из этой статьи ответственность на мне не несётся.\
