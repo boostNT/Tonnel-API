@@ -113,7 +113,7 @@ json_data = {
 
 
 
-response = requests.post('https://gifts2.tonnel.network/api/pageGifts', json=json_data, impersonate="chrome")
+response = requests.post('https://gifts2.tonnel.network/api/pageGifts', json=json_data, impersonate="chrome", headeres=headers)
 print(response.json())
 # Код выведет первую страницу с 5 самыми новыми подарками с именем Lunar Snake, с моделью Albino
 
