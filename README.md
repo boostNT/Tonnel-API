@@ -2,7 +2,7 @@
 
 Это неофициальная документация по апи [тонеля](https://tonnel-gift.vercel.app), самой популярной площадке для покупки и продаже телеграм подарков на данный момент.
 
-###### для ленивых рабочий код на питоне [**тут**](#рабочий-код-на-питоне)
+###### рабочий код на питоне [**тут**](#рабочий-код-на-питоне)
 
 ### При заходе на сайт, совершается пост запрос по этому юрл:
 
@@ -62,19 +62,36 @@ json_data = {
 
 > Код будет на питоне, кому надо на другом яп сами подгоняйте
 
-Поскольку тонель делал не коля из 3Б, обычная либка по типу requests/httpx не подойдет. Отлично работает с _curl_cffi_
+Поскольку тонель делал не коля из 3Б, обычная либка по типу requests/httpx не подойдет. Отлично работает с _curl_cffi_, также для идеальной работы рекомендую юзать фейк юзерагент.\
+`pip install curl_cffi fake_useragent`
 
 ### Рабочий код на питоне:
 
 ```python
 import json
 from curl_cffi import requests
+from fake_useragent import UserAgent
+
+ua = UserAgent()
+usag = ua.random
 
 
 headers = {
-    'origin': 'https://market.tonnel.network',
-    'referer': 'https://market.tonnel.network/',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
+    "authority": "gifts2.tonnel.network",
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    "content-type": "application/json",
+    "origin": "https://market.tonnel.network",
+    "priority": "u=1, i",
+    "referer": "https://market.tonnel.network/",
+    "sec-ch-ua": '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-site",
+    "user-agent": usag
 }
 
 
